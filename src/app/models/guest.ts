@@ -1,3 +1,10 @@
+// used as request body send texts endpoint
+export interface guestRM {
+    firstName: string,
+    phoneNumber: string,
+    phoneNumberHash: string,
+}
+
 export interface guestEM {
     firstName: string,
     lastName: string,
@@ -6,12 +13,7 @@ export interface guestEM {
     status: number
 }
 
-export interface guestRM {
-    firstName: string,
-    phoneNumber: string,
-    phoneNumberHash: string,
-}
-
+// used as response from get all guests
 export interface guestsResponse {
     data: guestEM[];
 }
