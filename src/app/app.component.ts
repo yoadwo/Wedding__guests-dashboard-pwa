@@ -12,31 +12,32 @@ import { MatTableDataSource } from '@angular/material/table';
 })
 export class AppComponent implements OnInit {
   title = 'guests-dashboard-pwa';
-  // @ViewChild(CdkVirtualScrollViewport) viewport: CdkVirtualScrollViewport | undefined;
-  // guests: Observable<guestEM[]> | undefined;
   guests: guestEM[] | null;
+  rsvpLink: string;
   dataSource: MatTableDataSource<guestEM>;
-  displayedColumns: string[] = ['firstName', 'lastName', 'phoneNumber', 'status'];
+  displayedColumns: string[] = ['recipient', 'phoneNumber', 'linkCreator', 'copyCreator', 'status'];
 
   constructor(private guestsService: GuestsService) {
     this.guests = null;
     this.dataSource = new MatTableDataSource();
+    this.rsvpLink = "";
   }
   async ngOnInit(): Promise<void> {
     this.guestsService.getGuestsInfo().subscribe(resp => {
-      this.guests = resp.data;  
-      this.dataSource = new MatTableDataSource(resp.data);
+      this.guests = resp.data.guests;
+      this.dataSource = new MatTableDataSource(resp.data.guests);
+      this.rsvpLink = resp.data.rsvpLink;
     })
   }
-  
-  rsvpStatus(status?: number){
+
+  rsvpStatus(status?: number) {
     switch (status) {
       case -1:
         return 'לא מגיע';
       case 0:
         return 'אולי';
-        case 1:
-          return 'מגיע';
+      case 1:
+        return 'מגיע';
       default:
         return '??';
     }
@@ -44,26 +45,33 @@ export class AppComponent implements OnInit {
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
-    if (this.dataSource){
+    if (this.dataSource) {
       this.dataSource.filter = filterValue.trim();
       console.log('data', this.dataSource.data);
       console.log('filtered', this.dataSource.filteredData);
-    }    
-  }
-
-  sendTexts(guests: any){
-    console.log("sending to ", guests);
-    // this.guestsService.sendGuestsText(guests).subscribe(resp => {
-    //   console.log('is ok?', resp);
-    // })
+    }
   }
   
-  sendTextsToAll(){
-    this.sendTexts(this.dataSource.data.map(({lastName, status,...rest})=> rest));
+  sendTextsToSelected(guest: guestEM) {
+    let personalised = `הי ${guest.recipient}`
+    let generic = `הנכם מוזמנים לחתונה של שירלי צדוק ויועד וולפסטל, שתיערך בעדן על המים ב-29.6. אנא אשרו השתתפותכם, בקישור הבא: `;
+    let link = this.rsvpLink + guest.phoneNumberHash;
+    let message = `${personalised}, ${generic} ${link}`;
+    let number = guest.phoneNumber;
+    window.open(`https://web.whatsapp.com/send?phone=+972${number}&text=${encodeURI(message)}`, "_blank");
   }
 
-  sendTextsToSelected(){
-    this.sendTexts(this.dataSource.filteredData.map(({lastName, status,...rest})=> rest));
-    
+  copyToClipboard(guest: guestEM) {
+    let personalised = `הי ${guest.recipient}`
+    let generic = `הנכם מוזמנים לחתונה של שירלי צדוק ויועד וולפסטל, שתיערך בעדן על המים ב-29.6. אנא אשרו השתתפותכם, בקישור הבא: `;
+    let link = this.rsvpLink + guest.phoneNumberHash;
+    let message = `${personalised}, ${generic} ${link}`;
+    navigator.clipboard.writeText(message)
+    .then(() => {
+      console.log('Text copied to clipboard');
+    })
+    .catch((error) => {
+      console.error('Failed to copy text to clipboard:', error);
+    });
   }
 }

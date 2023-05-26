@@ -1,40 +1,43 @@
 <cdk-virtual-scroll-viewport class="viewport" itemSize="10">
-    <!-- <mat-list>
-        <ng-container *cdkVirtualFor="let guest of guests">
-        <mat-list-item>
-            <div matListItemTitle>{{guest.firstName}} {{guest.lastName}}</div>
-            <div matListItemLine>סטטוס הזמנה -- {{rsvpStatus(guest.status)}}</div>
-            <mat-checkbox [checked]=" guest.status==null" color="primary">לשלוח מחדש?</mat-checkbox>
-            </mat-list-item>
-        </ng-container>
-    </mat-list> -->
     <mat-form-field>
         <mat-label>Filter</mat-label>
         <input matInput (keyup)="applyFilter($event)" placeholder="Ex. ium" #input />
     </mat-form-field>
 
     <table mat-table fixedLayout [dataSource]="dataSource" multiTemplateDataRows matSort>
-        <!-- Position firstName -->
-        <ng-container matColumnDef="firstName">
-            <th mat-header-cell *matHeaderCellDef> firstName </th>
-            <td mat-cell *matCellDef="let element"> {{element.firstName}} </td>
+        <!-- recipient full name -->
+        <ng-container matColumnDef="recipient">
+            <th mat-header-cell *matHeaderCellDef> שם המוזמן </th>
+            <td mat-cell *matCellDef="let element"> {{element.recipient}} </td>
         </ng-container>
 
-        <!-- Name lastName -->
-        <ng-container matColumnDef="lastName">
-            <th mat-header-cell *matHeaderCellDef> lastName </th>
-            <td mat-cell *matCellDef="let element"> {{element.lastName}} </td>
-        </ng-container>
-
-        <!-- Name phoneNumber -->
+        <!-- recipient phone number -->
         <ng-container matColumnDef="phoneNumber">
-            <th mat-header-cell *matHeaderCellDef> phoneNumber </th>
+            <th mat-header-cell *matHeaderCellDef> טלפון </th>
             <td mat-cell *matCellDef="let element"> {{element.phoneNumber}} </td>
         </ng-container>
 
-        <!-- Name status -->
+        <!-- button to open whatsapp tab with recipient and message -->
+        <ng-container matColumnDef="linkCreator">
+            <th mat-header-cell *matHeaderCellDef> לחצו לשליחה לווצפ </th>
+            <td mat-cell *matCellDef="let element">
+                <button mat-raised-button color="primary" (click)="sendTextsToSelected(element)">
+                לחצו
+            </button> </td>
+        </ng-container>
+
+        <!-- button to only copy the message to the clipboard -->
+        <ng-container matColumnDef="copyCreator">
+            <th mat-header-cell *matHeaderCellDef> לחצו ליצירת הודעה </th>
+            <td mat-cell *matCellDef="let element">
+                <button mat-raised-button color="primary" (click)="copyToClipboard(element)">
+                רק העתקה
+            </button> </td>
+        </ng-container>
+
+        <!-- recipient status -->
         <ng-container matColumnDef="status">
-            <th mat-header-cell *matHeaderCellDef> status </th>
+            <th mat-header-cell *matHeaderCellDef> סטטוס אישור </th>
             <td mat-cell *matCellDef="let element"> {{rsvpStatus(element.status)}} </td>
         </ng-container>
 
@@ -45,10 +48,3 @@
         </tr>
     </table>
 </cdk-virtual-scroll-viewport>
-
-<button mat-raised-button color="primary" (click)="sendTextsToAll()">
-    SEND TEXTS TO ALL
-</button>
-<button mat-raised-button color="primary" (click)="sendTextsToSelected()">
-    SEND TEXTS TO SELECTED
-</button>

@@ -17,10 +17,6 @@ export class GuestsService {
     return this.http.get<guestsResponse>(environment.getGuestsInfo + '/get-guests-info')
   }
 
-  sendGuestsText(guestsTextParams: guestRM[]) {
-    return this.http.post<guestRM[]>(environment.textGuests + '/text-guests',guestsTextParams);
-  }
-
   // private handleError(error: HttpErrorResponse) {
   //   if (error.status === 0) {
   //     // A client-side or network error occurred. Handle it accordingly.

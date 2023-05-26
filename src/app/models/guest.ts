@@ -1,19 +1,23 @@
 // used as request body send texts endpoint
 export interface guestRM {
-    firstName: string,
+    recipient: string,
     phoneNumber: string,
     phoneNumberHash: string,
 }
 
 export interface guestEM {
-    firstName: string,
-    lastName: string,
+    recipient: string,
     phoneNumber: string,
     phoneNumberHash: string,
     status: number
 }
 
+export interface guestsWrapper {
+    guests: guestEM[],
+    rsvpLink: string
+}
+
 // used as response from get all guests
 export interface guestsResponse {
-    data: guestEM[];
+    data: guestsWrapper;
 }
