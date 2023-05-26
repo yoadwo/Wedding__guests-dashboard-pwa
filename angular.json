@@ -48,7 +48,14 @@
                   "maximumError": "4kb"
                 }
               ],
-              "outputHashing": "all"
+              "baseHref": "/Wedding__guests-dashboard-pwa/",
+              "outputHashing": "all",
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.development.ts"
+                }
+              ]
             },
             "development": {
               "buildOptimizer": false,

@@ -13,16 +13,8 @@ export class GuestsService {
 
   constructor(private http: HttpClient) { }
 
-  getGuestsInfo(): Observable<guestEM[]> {
-    // httpOptions
+  getGuestsInfo(){
     return this.http.get<guestsResponse>(environment.getGuestsInfo + '/get-guests-info')
-    .pipe(
-      map((resp: guestsResponse) => resp.data)
-    );
-  }
-
-  sendGuestsText(guestsTextParams: guestRM[]) {
-    return this.http.post<guestRM[]>(environment.textGuests + '/text-guests',guestsTextParams);
   }
 
   // private handleError(error: HttpErrorResponse) {
