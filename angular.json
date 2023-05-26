@@ -64,6 +64,7 @@
               "extractLicenses": false,
               "sourceMap": true,
               "namedChunks": true,
+              "baseHref": "/Wedding__guests-dashboard-pwa/",
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
