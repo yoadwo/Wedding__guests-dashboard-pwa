@@ -1,4 +1,4 @@
 export const environment = {
-    getGuestsInfo: 'https://2rsfxw4bu8.execute-api.eu-central-1.amazonaws.com/dev',
-    textGuests: 'https://2rsfxw4bu8.execute-api.eu-central-1.amazonaws.com/dev'
+    getGuestsInfo: 'https://yemz5f82ph.execute-api.us-east-1.amazonaws.com/dev',
+    textGuests: 'https://yemz5f82ph.execute-api.us-east-1.amazonaws.com/dev'
 };
