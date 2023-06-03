@@ -54,7 +54,7 @@ export class AppComponent implements OnInit {
   
   sendTextsToSelected(guest: guestEM) {
     let personalised = `הי ${guest.recipient}`
-    let generic = `הנכם מוזמנים לחתונה של שירלי צדוק ויועד וולפסטל, שתיערך בעדן על המים ב-29.6. אנא אשרו השתתפותכם, בקישור הבא: `;
+    let generic = `נשמח לראותכם בחתונה של שירלי צדוק ויועד וולפסטל, שתיערך ב"עדן על המים" ב-29.6. אנא אשרו השתתפותכם בקישור הבא: `;
     let link = this.rsvpLink + guest.phoneNumberHash;
     let message = `${personalised}, ${generic} ${link}`;
     let number = guest.phoneNumber;

@@ -71,6 +71,14 @@
                   "with": "src/environments/environment.development.ts"
                 }
               ]
+            },
+            "local": {
+              "buildOptimizer": false,
+              "optimization": false,
+              "vendorChunk": true,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "namedChunks": true              
             }
           },
           "defaultConfiguration": "production"
@@ -83,6 +91,9 @@
             },
             "development": {
               "browserTarget": "guests-dashboard-pwa:build:development"
+            },
+            "local": {
+              "browserTarget": "guests-dashboard-pwa:build:local"
             }
           },
           "defaultConfiguration": "development"

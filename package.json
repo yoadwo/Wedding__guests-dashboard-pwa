@@ -7,7 +7,7 @@
     "build": "ng build",
     "build-for-prod": "ng build --configuration production",
     "build-for-dev": "ng build --configuration development",
-    "watch": "ng build --watch --configuration development",
+    "watch": "ng build --watch --configuration local",
     "test": "ng test"
   },
   "private": true,
