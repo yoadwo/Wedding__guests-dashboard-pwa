@@ -15,7 +15,9 @@ export class AppComponent implements OnInit {
   guests: guestEM[] | null;
   rsvpLink: string;
   dataSource: MatTableDataSource<guestEM>;
-  displayedColumns: string[] = ['recipient', 'phoneNumber', 'linkCreator', 'copyCreator', 'status'];
+  displayedColumns: string[] = ['recipient', 'phoneNumber', 'linkCreator', 'copyCreator', 'status', 'attendingCount'];
+  eventDescription:string = `נשמח לראותכם בחתונה של שירלי צדוק ויועד וולפסטל, שתיערך ב"עדן על המים" ב-29.6. אנא אשרו השתתפותכם בקישור הבא: `;
+  shuttleDescription:string = `בנוסף, לחצו כאן כדי להירשם להסעה: https://forms.gle/XMMMfSxGyL65R6T36`
 
   constructor(private guestsService: GuestsService) {
     this.guests = null;
@@ -54,18 +56,16 @@ export class AppComponent implements OnInit {
   
   sendTextsToSelected(guest: guestEM) {
     let personalised = `הי ${guest.recipient}`
-    let generic = `נשמח לראותכם בחתונה של שירלי צדוק ויועד וולפסטל, שתיערך ב"עדן על המים" ב-29.6. אנא אשרו השתתפותכם בקישור הבא: `;
     let link = this.rsvpLink + guest.phoneNumberHash;
-    let message = `${personalised}, ${generic} ${link}`;
+    let message = `${personalised}, ${this.eventDescription} ${link}. ${this.shuttleDescription}`;
     let number = guest.phoneNumber;
     window.open(`https://web.whatsapp.com/send?phone=+972${number}&text=${encodeURI(message)}`, "_blank");
   }
 
   copyToClipboard(guest: guestEM) {
     let personalised = `הי ${guest.recipient}`
-    let generic = `נשמח לראותכם בחתונה של שירלי צדוק ויועד וולפסטל, שתיערך ב"עדן על המים" ב-29.6. אנא אשרו השתתפותכם בקישור הבא: `;
     let link = this.rsvpLink + guest.phoneNumberHash;
-    let message = `${personalised}, ${generic} ${link}`;
+    let message = `${personalised}, ${this.eventDescription} ${link}.\n\n${this.shuttleDescription}`;
     navigator.clipboard.writeText(message)
     .then(() => {
       console.log('Text copied to clipboard');
