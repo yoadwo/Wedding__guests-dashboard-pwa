@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { guestEM } from './models/guest';
 import { GuestsService } from './services/guests/guests.service';
 import { MatTableDataSource } from '@angular/material/table';
+import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 
 @Component({
   selector: 'app-root',
@@ -12,7 +13,7 @@ import { MatTableDataSource } from '@angular/material/table';
 })
 export class AppComponent implements OnInit {
   title = 'guests-dashboard-pwa';
-  guests: guestEM[] | null;
+  //guests: guestEM[] | null;
   rsvpLink: string;
   dataSource: MatTableDataSource<guestEM>;
   displayedColumns: string[] = ['recipient', 'phoneNumber', 'linkCreator', 'copyCreator', 'status', 'attendingCount'];
@@ -20,13 +21,13 @@ export class AppComponent implements OnInit {
   shuttleDescription:string = `בנוסף, לחצו כאן כדי להירשם להסעה: https://forms.gle/XMMMfSxGyL65R6T36`
 
   constructor(private guestsService: GuestsService) {
-    this.guests = null;
+    //this.guests = null;
     this.dataSource = new MatTableDataSource();
     this.rsvpLink = "";
   }
   async ngOnInit(): Promise<void> {
     this.guestsService.getGuestsInfo().subscribe(resp => {
-      this.guests = resp.data.guests;
+      //this.guests = resp.data.guests;
       this.dataSource = new MatTableDataSource(resp.data.guests);
       this.rsvpLink = resp.data.rsvpLink;
     })
@@ -45,12 +46,24 @@ export class AppComponent implements OnInit {
     }
   }
 
-  applyFilter(event: Event) {
+  filterValues(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     if (this.dataSource) {
       this.dataSource.filter = filterValue.trim();
       console.log('data', this.dataSource.data);
       console.log('filtered', this.dataSource.filteredData);
+    }
+  }
+
+  filterNotResponded(event: MatSlideToggleChange) {
+    if (event.checked) {
+      this.dataSource = new MatTableDataSource(this.dataSource.data.filter(g => g.status == null));
+    } else {
+      this.guestsService.getGuestsInfo().subscribe(resp => {
+        //this.guests = resp.data.guests;
+        this.dataSource = new MatTableDataSource(resp.data.guests);
+        this.rsvpLink = resp.data.rsvpLink;
+      })
     }
   }
   
