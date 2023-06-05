@@ -57,7 +57,7 @@ export class AppComponent implements OnInit {
   sendTextsToSelected(guest: guestEM) {
     let personalised = `הי ${guest.recipient}`
     let link = this.rsvpLink + guest.phoneNumberHash;
-    let message = `${personalised}, ${this.eventDescription} ${link}. ${this.shuttleDescription}`;
+    let message = `${personalised}, ${this.eventDescription} ${link}  ${this.shuttleDescription}`;
     let number = guest.phoneNumber;
     window.open(`https://web.whatsapp.com/send?phone=+972${number}&text=${encodeURI(message)}`, "_blank");
   }
@@ -65,7 +65,7 @@ export class AppComponent implements OnInit {
   copyToClipboard(guest: guestEM) {
     let personalised = `הי ${guest.recipient}`
     let link = this.rsvpLink + guest.phoneNumberHash;
-    let message = `${personalised}, ${this.eventDescription} ${link}.\n\n${this.shuttleDescription}`;
+    let message = `${personalised}, ${this.eventDescription} ${link}\n\n${this.shuttleDescription}`;
     navigator.clipboard.writeText(message)
     .then(() => {
       console.log('Text copied to clipboard');
