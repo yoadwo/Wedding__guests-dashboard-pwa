@@ -17,7 +17,7 @@ export class AppComponent implements OnInit {
   rsvpLink: string;
   dataSource: MatTableDataSource<guestEM>;
   displayedColumns: string[] = ['recipient', 'phoneNumber', 'linkCreator', 'copyCreator', 'status', 'attendingCount'];
-  eventDescription:string = `נשמח לראותכם בחתונה של שירלי צדוק ויועד וולפסטל, שתיערך ב"עדן על המים" ב-29.6. אנא אשרו השתתפותכם בקישור הבא: `;
+  eventDescription:string = `נשמח לראותכם בחתונה של שירלי צדוק ויועד וולפסטל, שתיערך ב"עדן גן האירועים" ב-29.6. אנא אשרו השתתפותכם בקישור הבא: `;
   shuttleDescription:string = `בנוסף, לחצו כאן כדי להירשם להסעה: https://forms.gle/XMMMfSxGyL65R6T36`
 
   constructor(private guestsService: GuestsService) {
