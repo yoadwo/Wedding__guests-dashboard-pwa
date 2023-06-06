@@ -17,8 +17,9 @@ export class AppComponent implements OnInit {
   rsvpLink: string;
   dataSource: MatTableDataSource<guestEM>;
   displayedColumns: string[] = ['recipient', 'phoneNumber', 'linkCreator', 'copyCreator', 'status', 'attendingCount'];
-  eventDescription:string = `נשמח לראותכם בחתונה של שירלי צדוק ויועד וולפסטל, שתיערך ב"עדן גן האירועים" ב-29.6. אנא אשרו השתתפותכם בקישור הבא: `;
-  shuttleDescription:string = `בנוסף, לחצו כאן כדי להירשם להסעה: https://forms.gle/XMMMfSxGyL65R6T36`
+  eventDescription:string = `נשמח לראותכם בחתונה של שירלי צדוק ויועד וולפסטל, שתיערך ב"עדן גן האירועים" ב-29.6. אנא אשרו השתתפותכם בקישור הבא:`;
+  shuttleDescription:string = `בנוסף, לחצו כאן כדי להירשם להסעה: https://forms.gle/XMMMfSxGyL65R6T36`;
+  ifNoLinks:string = `טיפ: על מנת להפוך את הקישור ללחיץ, *שלחו הודעה חזרה* ונסו שוב בעוד דקה`;
 
   constructor(private guestsService: GuestsService) {
     //this.guests = null;
@@ -70,7 +71,7 @@ export class AppComponent implements OnInit {
   sendTextsToSelected(guest: guestEM) {
     let personalised = `הי ${guest.recipient}`
     let link = this.rsvpLink + guest.phoneNumberHash;
-    let message = `${personalised}, ${this.eventDescription} ${link}  ${this.shuttleDescription}`;
+    let message = `${personalised}, ${this.eventDescription}\n${link}\n${this.shuttleDescription}\n\n${this.ifNoLinks}`;
     let number = guest.phoneNumber;
     window.open(`https://web.whatsapp.com/send?phone=+972${number}&text=${encodeURI(message)}`, "_blank");
   }
