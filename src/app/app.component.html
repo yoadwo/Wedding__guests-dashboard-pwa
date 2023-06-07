@@ -48,6 +48,18 @@
             <td mat-cell *matCellDef="let element"> {{element.attendingCount}} </td>
         </ng-container>
 
+        <!-- recipient side (groom or bride) -->
+        <ng-container matColumnDef="side">
+            <th mat-header-cell *matHeaderCellDef> צד </th>
+            <td mat-cell *matCellDef="let element"> {{element.side}} </td>
+        </ng-container>
+
+        <!-- recipient group type (family, friends) -->
+        <ng-container matColumnDef="_group">
+            <th mat-header-cell *matHeaderCellDef> קבוצה </th>
+            <td mat-cell *matCellDef="let element"> {{element._group}} </td>
+        </ng-container>
+
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
         <tr class="mat-row" *matNoDataRow>

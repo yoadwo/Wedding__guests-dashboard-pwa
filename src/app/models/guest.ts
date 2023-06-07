@@ -11,6 +11,8 @@ export interface guestEM {
     phoneNumberHash: string,
     status: number,
     attendingCount: number,
+    side: string,
+    _group: string
 }
 
 export interface guestsWrapper {
