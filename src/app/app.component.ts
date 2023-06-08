@@ -84,8 +84,8 @@ export class AppComponent implements OnInit {
     let personalised = `הי ${guest.recipient}`
     let link = this.rsvpLink + guest.phoneNumberHash;
     let message = `${personalised}, ${this.eventDescription}\n${link}\n${this.shuttleDescription}\n\n${this.ifNoLinks}`;
-    let number = guest.phoneNumber;
-    window.open(`https://web.whatsapp.com/send?phone=+972${number}&text=${encodeURI(message)}`, "_blank");
+    let number = this.normalizedPhoneNumber(guest.phoneNumber);
+    window.open(`https://web.whatsapp.com/send?phone=${number}&text=${encodeURI(message)}`, "_blank");
   }
 
   copyToClipboard(guest: guestEM) {
@@ -99,5 +99,16 @@ export class AppComponent implements OnInit {
     .catch((error) => {
       console.error('Failed to copy text to clipboard:', error);
     });
+  }
+
+  normalizedPhoneNumber(number: string){
+    // currently most numbers are saved without the internation prefix, so add it if needed
+    if (!number.startsWith("+972")) {
+      number = "+972" + number;
+    }
+    // also, alot of numbers contain dashes, remove them
+    number = number.replace(/-/g, '');    
+    
+    return number;
   }
 }
