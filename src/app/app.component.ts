@@ -67,6 +67,18 @@ export class AppComponent implements OnInit {
       })
     }
   }
+
+  filterNotReceived(event: MatSlideToggleChange) {
+    if (event.checked) {
+      this.dataSource = new MatTableDataSource(this.dataSource.data.filter(g => g.messagesReceived == 0));
+    } else {
+      this.guestsService.getGuestsInfo().subscribe(resp => {
+        //this.guests = resp.data.guests;
+        this.dataSource = new MatTableDataSource(resp.data.guests);
+        this.rsvpLink = resp.data.rsvpLink;
+      })
+    }
+  }
   
   sendTextsToSelected(guest: guestEM) {
     let personalised = `הי ${guest.recipient}`

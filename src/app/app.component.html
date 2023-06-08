@@ -1,9 +1,10 @@
 <cdk-virtual-scroll-viewport class="viewport" itemSize="10">
     <mat-form-field>
         <mat-label>Filter</mat-label>
-        <input matInput (keyup)="filterValues($event)" placeholder="Ex. ium" #input />
+        <input matInput (keyup)="filterValues($event)" placeholder="חיפוש כללי" #input />
     </mat-form-field>
-    <mat-slide-toggle (change)="filterNotResponded($event)">Completed Only</mat-slide-toggle>
+    <mat-slide-toggle (change)="filterNotResponded($event)">עדיין לא הגיבו</mat-slide-toggle>
+    <mat-slide-toggle (change)="filterNotReceived($event)">לא קיבלו הודעה</mat-slide-toggle>
 
     <table mat-table fixedLayout [dataSource]="dataSource" multiTemplateDataRows matSort>
         <!-- recipient full name -->

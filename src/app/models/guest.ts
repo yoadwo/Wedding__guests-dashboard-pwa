@@ -12,7 +12,8 @@ export interface guestEM {
     status: number,
     attendingCount: number,
     side: string,
-    _group: string
+    _group: string,
+    messagesReceived: number
 }
 
 export interface guestsWrapper {
