@@ -17,20 +17,28 @@ export class AppComponent implements OnInit {
   rsvpLink: string;
   dataSource: MatTableDataSource<guestEM>;
   displayedColumns: string[] = ['recipient', 'phoneNumber', 'linkCreator', 'copyCreator', 'status', 'attendingCount', 'side', '_group'];
-  eventDescription:string = `נשמח לראותכם בחתונה של שירלי צדוק ויועד וולפסטל, שתיערך ב"עדן גן האירועים" ב-29.6. אנא אשרו השתתפותכם בקישור הבא:`;
-  shuttleDescription:string = `בנוסף, לחצו כאן כדי להירשם להסעה: https://forms.gle/XMMMfSxGyL65R6T36`;
-  ifNoLinks:string = `טיפ: על מנת להפוך את הקישור ללחיץ, *שלחו הודעה חזרה* ונסו שוב בעוד דקה`;
+  eventDescription: string = `נשמח לראותכם בחתונה של שירלי צדוק ויועד וולפסטל, שתיערך ב"עדן גן האירועים" ב-29.6. אנא אשרו השתתפותכם בקישור הבא:`;
+  shuttleDescription: string = `בנוסף, לחצו כאן כדי להירשם להסעה: https://forms.gle/XMMMfSxGyL65R6T36`;
+  ifNoLinks: string = `טיפ: על מנת להפוך את הקישור ללחיץ, *שלחו הודעה חזרה* ונסו שוב בעוד דקה. אם בכל זאת לא הצלחתם, שילחו את המספר כאן ואנו נעדכן עבורכם.`;
+  totalGuestsCount: number;
+  attendingGuestsCount: number;
 
   constructor(private guestsService: GuestsService) {
     //this.guests = null;
     this.dataSource = new MatTableDataSource();
     this.rsvpLink = "";
+    this.totalGuestsCount = 0;
+    this.attendingGuestsCount = 0;
   }
   async ngOnInit(): Promise<void> {
     this.guestsService.getGuestsInfo().subscribe(resp => {
       //this.guests = resp.data.guests;
       this.dataSource = new MatTableDataSource(resp.data.guests);
       this.rsvpLink = resp.data.rsvpLink;
+      
+      this.totalGuestsCount = resp.data.guests.length;
+      this.attendingGuestsCount = resp.data.guests.reduce((sum, guest) => guest.status === 1 ? sum + guest.attendingCount : sum, 0);
+
     })
   }
 
@@ -51,8 +59,6 @@ export class AppComponent implements OnInit {
     const filterValue = (event.target as HTMLInputElement).value;
     if (this.dataSource) {
       this.dataSource.filter = filterValue.trim();
-      console.log('data', this.dataSource.data);
-      console.log('filtered', this.dataSource.filteredData);
     }
   }
 
@@ -64,6 +70,9 @@ export class AppComponent implements OnInit {
         //this.guests = resp.data.guests;
         this.dataSource = new MatTableDataSource(resp.data.guests);
         this.rsvpLink = resp.data.rsvpLink;
+
+        this.totalGuestsCount = resp.data.guests.length;
+        this.attendingGuestsCount = resp.data.guests.reduce((sum, guest) => guest.status === 1 ? sum + guest.attendingCount : sum, 0);
       })
     }
   }
@@ -76,10 +85,13 @@ export class AppComponent implements OnInit {
         //this.guests = resp.data.guests;
         this.dataSource = new MatTableDataSource(resp.data.guests);
         this.rsvpLink = resp.data.rsvpLink;
+
+        this.totalGuestsCount = resp.data.guests.length;
+        this.attendingGuestsCount = resp.data.guests.reduce((sum, guest) => guest.status === 1 ? sum + guest.attendingCount : sum, 0);
       })
     }
   }
-  
+
   sendTextsToSelected(guest: guestEM) {
     let personalised = `הי ${guest.recipient}`
     let link = this.rsvpLink + guest.phoneNumberHash;
@@ -93,22 +105,22 @@ export class AppComponent implements OnInit {
     let link = this.rsvpLink + guest.phoneNumberHash;
     let message = `${personalised}, ${this.eventDescription} ${link}\n\n${this.shuttleDescription}`;
     navigator.clipboard.writeText(message)
-    .then(() => {
-      console.log('Text copied to clipboard');
-    })
-    .catch((error) => {
-      console.error('Failed to copy text to clipboard:', error);
-    });
+      .then(() => {
+        console.log('Text copied to clipboard');
+      })
+      .catch((error) => {
+        console.error('Failed to copy text to clipboard:', error);
+      });
   }
 
-  normalizedPhoneNumber(number: string){
+  normalizedPhoneNumber(number: string) {
     // currently most numbers are saved without the internation prefix, so add it if needed
     if (!number.startsWith("+972")) {
       number = "+972" + number;
     }
     // also, alot of numbers contain dashes, remove them
-    number = number.replace(/-/g, '');    
-    
+    number = number.replace(/-/g, '');
+
     return number;
   }
 }

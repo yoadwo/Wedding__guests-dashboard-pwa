@@ -1,11 +1,18 @@
 <cdk-virtual-scroll-viewport class="viewport" itemSize="10">
-    <mat-form-field>
-        <mat-label>Filter</mat-label>
-        <input matInput (keyup)="filterValues($event)" placeholder="חיפוש כללי" #input />
-    </mat-form-field>
-    <mat-slide-toggle (change)="filterNotResponded($event)">עדיין לא הגיבו</mat-slide-toggle>
-    <mat-slide-toggle (change)="filterNotReceived($event)">לא קיבלו הודעה</mat-slide-toggle>
-
+    <div id="controlPane">
+        <div>
+            <mat-form-field>
+                <mat-label>Filter</mat-label>
+                <input matInput (keyup)="filterValues($event)" placeholder="חיפוש כללי" #input />
+            </mat-form-field>
+            <mat-slide-toggle (change)="filterNotResponded($event)">עדיין לא הגיבו</mat-slide-toggle>
+            <mat-slide-toggle (change)="filterNotReceived($event)">לא קיבלו הודעה</mat-slide-toggle>
+        </div>
+        <div>
+            <p class="counter">סך הכל מוזמנים: {{totalGuestsCount}}</p>
+            <p class="counter">אישרו הגעה: {{attendingGuestsCount}}</p>
+        </div>
+    </div>
     <table mat-table fixedLayout [dataSource]="dataSource" multiTemplateDataRows matSort>
         <!-- recipient full name -->
         <ng-container matColumnDef="recipient">
@@ -24,8 +31,9 @@
             <th mat-header-cell *matHeaderCellDef> לחצו לשליחה לווצפ </th>
             <td mat-cell *matCellDef="let element">
                 <button mat-raised-button color="primary" (click)="sendTextsToSelected(element)">
-                לחצו
-            </button> </td>
+                    לחצו
+                </button>
+            </td>
         </ng-container>
 
         <!-- button to only copy the message to the clipboard -->
@@ -33,8 +41,9 @@
             <th mat-header-cell *matHeaderCellDef> לחצו ליצירת הודעה </th>
             <td mat-cell *matCellDef="let element">
                 <button mat-raised-button color="primary" (click)="copyToClipboard(element)">
-                רק העתקה
-            </button> </td>
+                    רק העתקה
+                </button>
+            </td>
         </ng-container>
 
         <!-- recipient status -->
