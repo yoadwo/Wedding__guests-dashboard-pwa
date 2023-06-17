@@ -19,7 +19,7 @@ export class AppComponent implements OnInit {
   displayedColumns: string[] = ['recipient', 'phoneNumber', 'linkCreator', 'copyCreator', 'status', 'attendingCount', 'side', '_group'];
   eventDescription: string = `נשמח לראותכם בחתונה של שירלי צדוק ויועד וולפסטל, שתיערך ב"עדן גן האירועים" ב-29.6. אנא אשרו השתתפותכם בקישור הבא:`;
   shuttleDescription: string = `בנוסף, לחצו כאן כדי להירשם להסעה: https://forms.gle/XMMMfSxGyL65R6T36`;
-  ifNoLinks: string = `טיפ: על מנת להפוך את הקישור ללחיץ, *שלחו הודעה חזרה* ונסו שוב בעוד דקה. אם בכל זאת לא הצלחתם, שילחו את המספר כאן ואנו נעדכן עבורכם.`;
+  ifNoLinks: string = `טיפ: על מנת להפוך את הקישור ללחיץ, *שלחו הודעה חזרה* ונסו שוב בעוד דקה. אם בכל זאת לא הצלחתם, שילחו את מספר המגיעים כאן ואנו נעדכן את התשובה עבורכם.`;
   totalGuestsCount: number;
   attendingGuestsCount: number;
 
