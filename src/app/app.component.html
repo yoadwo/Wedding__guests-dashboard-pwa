@@ -6,10 +6,9 @@
                 <input matInput (keyup)="filterValues($event)" placeholder="חיפוש כללי" #input />
             </mat-form-field>
             <mat-slide-toggle (change)="filterNotResponded($event)">עדיין לא הגיבו</mat-slide-toggle>
-            <mat-slide-toggle (change)="filterNotReceived($event)">לא קיבלו הודעה</mat-slide-toggle>
+            <mat-slide-toggle (change)="filterAccepted($event)">מגיעים בלבד</mat-slide-toggle>
         </div>
         <div>
-            <p class="counter">כמות רשומות: {{totalGuestsCount}}</p>
             <p class="counter">אישרו הגעה: {{attendingGuestsCount}}</p>
         </div>
     </div>
@@ -28,20 +27,30 @@
 
         <!-- button to open whatsapp tab with recipient and message -->
         <ng-container matColumnDef="linkCreator">
-            <th mat-header-cell *matHeaderCellDef> לחצו לשליחה לווצפ </th>
+            <th mat-header-cell *matHeaderCellDef>שליחת הזמנה בווצפ</th>
             <td mat-cell *matCellDef="let element">
                 <button mat-raised-button color="primary" (click)="sendTextsToSelected(element)">
-                    לחצו
+                    שלח בווצפ
+                </button>
+            </td>
+        </ng-container>
+
+        <!-- button to open whatsapp tab with recipient and message -->
+        <ng-container matColumnDef="weddingDayCreator">
+            <th mat-header-cell *matHeaderCellDef>שליחת קישור לפייבוקס בווצפ</th>
+            <td mat-cell *matCellDef="let element; let i = dataIndex">
+                <button mat-raised-button color="primary" (click)="sendWeddingDayTexts(element, i)">
+                    שלח בווצפ
                 </button>
             </td>
         </ng-container>
 
         <!-- button to only copy the message to the clipboard -->
         <ng-container matColumnDef="copyCreator">
-            <th mat-header-cell *matHeaderCellDef> לחצו ליצירת הודעה </th>
+            <th mat-header-cell *matHeaderCellDef>העתקה ידנית של ההזמנה</th>
             <td mat-cell *matCellDef="let element">
                 <button mat-raised-button color="primary" (click)="copyToClipboard(element)">
-                    רק העתקה
+                    העתק
                 </button>
             </td>
         </ng-container>

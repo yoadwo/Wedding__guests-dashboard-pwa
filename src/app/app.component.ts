@@ -6,6 +6,8 @@ import { GuestsService } from './services/guests/guests.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 
+
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -16,18 +18,24 @@ export class AppComponent implements OnInit {
   //guests: guestEM[] | null;
   rsvpLink: string;
   dataSource: MatTableDataSource<guestEM>;
-  displayedColumns: string[] = ['recipient', 'phoneNumber', 'linkCreator', 'copyCreator', 'status', 'attendingCount', 'side', '_group'];
+  displayedColumns: string[] = ['recipient', 'phoneNumber', 'linkCreator', 'weddingDayCreator', 'copyCreator', 'status', 'attendingCount', 'side', '_group'];
   eventDescription: string = `נשמח לראותכם בחתונה של שירלי צדוק ויועד וולפסטל, שתיערך ב"עדן גן האירועים" ב-29.6. אנא אשרו השתתפותכם בקישור הבא:`;
   shuttleDescription: string = `בנוסף, לחצו כאן כדי להירשם להסעה: https://forms.gle/XMMMfSxGyL65R6T36`;
   ifNoLinks: string = `טיפ: על מנת להפוך את הקישור ללחיץ, *שלחו הודעה חזרה* ונסו שוב בעוד דקה. אם בכל זאת לא הצלחתם, שילחו את מספר המגיעים כאן ואנו נעדכן את התשובה עבורכם.`;
-  totalGuestsCount: number;
+  weddingDayDescription: string = 'נרגשים ומצפים לראותכם היום ביום החתונה שלנו. ניפגש ב19:30 ב"עדן גן האירועים", מושב ניר אליהו. להוראות הגעה:';
+  navigationLink: string = 'https://goo.gl/maps/B54sVP7AmmwxFmjr7';
+  greeting: string = 'מתרגשים, שירלי צדוק ויועד וולפסטל';
+  payboxDescription: string = 'לנוחיותכם, ניתן להעניק מתנות דרך קבוצת ה-PayBox שנפתחה עבורכם בלינק הבא:';
+  payboxLinks: string[] = [
+    "https://payboxapp.page.link/snan5v3sJWy2WEG97",
+    "https://payboxapp.page.link/2DxG279uGV1ug7Jj7"
+  ]
   attendingGuestsCount: number;
 
   constructor(private guestsService: GuestsService) {
     //this.guests = null;
     this.dataSource = new MatTableDataSource();
     this.rsvpLink = "";
-    this.totalGuestsCount = 0;
     this.attendingGuestsCount = 0;
   }
   async ngOnInit(): Promise<void> {
@@ -35,8 +43,6 @@ export class AppComponent implements OnInit {
       //this.guests = resp.data.guests;
       this.dataSource = new MatTableDataSource(resp.data.guests);
       this.rsvpLink = resp.data.rsvpLink;
-      
-      this.totalGuestsCount = resp.data.guests.length;
       this.attendingGuestsCount = resp.data.guests.reduce((sum, guest) => guest.status === 1 ? sum + guest.attendingCount : sum, 0);
 
     })
@@ -70,8 +76,6 @@ export class AppComponent implements OnInit {
         //this.guests = resp.data.guests;
         this.dataSource = new MatTableDataSource(resp.data.guests);
         this.rsvpLink = resp.data.rsvpLink;
-
-        this.totalGuestsCount = resp.data.guests.length;
         this.attendingGuestsCount = resp.data.guests.reduce((sum, guest) => guest.status === 1 ? sum + guest.attendingCount : sum, 0);
       })
     }
@@ -85,8 +89,19 @@ export class AppComponent implements OnInit {
         //this.guests = resp.data.guests;
         this.dataSource = new MatTableDataSource(resp.data.guests);
         this.rsvpLink = resp.data.rsvpLink;
+        this.attendingGuestsCount = resp.data.guests.reduce((sum, guest) => guest.status === 1 ? sum + guest.attendingCount : sum, 0);
+      })
+    }
+  }
 
-        this.totalGuestsCount = resp.data.guests.length;
+  filterAccepted(event: MatSlideToggleChange) {
+    if (event.checked) {
+      this.dataSource = new MatTableDataSource(this.dataSource.data.filter(g => g.status == 1));
+    } else {
+      this.guestsService.getGuestsInfo().subscribe(resp => {
+        //this.guests = resp.data.guests;
+        this.dataSource = new MatTableDataSource(resp.data.guests);
+        this.rsvpLink = resp.data.rsvpLink;
         this.attendingGuestsCount = resp.data.guests.reduce((sum, guest) => guest.status === 1 ? sum + guest.attendingCount : sum, 0);
       })
     }
@@ -96,6 +111,16 @@ export class AppComponent implements OnInit {
     let personalised = `הי ${guest.recipient}`
     let link = this.rsvpLink + guest.phoneNumberHash;
     let message = `${personalised}, ${this.eventDescription}\n${link}\n${this.shuttleDescription}\n\n${this.ifNoLinks}`;
+    let number = this.normalizedPhoneNumber(guest.phoneNumber);
+    window.open(`https://web.whatsapp.com/send?phone=${number}&text=${encodeURI(message)}`, "_blank");
+  }
+
+  sendWeddingDayTexts(guest: guestEM, index: number) {
+    debugger;
+    let personalised = `${guest.recipient} היקרים,`
+    let payboxLink = this.payboxLinks[index % this.payboxLinks.length];
+
+    let message = `${personalised}\n${this.weddingDayDescription}\n${this.navigationLink}\n${this.payboxDescription}\n${payboxLink}\n\n${this.greeting}`;
     let number = this.normalizedPhoneNumber(guest.phoneNumber);
     window.open(`https://web.whatsapp.com/send?phone=${number}&text=${encodeURI(message)}`, "_blank");
   }
