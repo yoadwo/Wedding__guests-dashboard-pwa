@@ -18,7 +18,7 @@ export class AppComponent implements OnInit {
   //guests: guestEM[] | null;
   rsvpLink: string;
   dataSource: MatTableDataSource<guestEM>;
-  displayedColumns: string[] = ['recipient', 'phoneNumber', 'linkCreator', 'weddingDayCreator', 'copyCreator', 'status', 'attendingCount', 'side', '_group'];
+  displayedColumns: string[] = ['recipient', 'phoneNumber', 'linkCreator', 'weddingDayCreator', 'copyCreator', 'thanksCreator', 'status', 'attendingCount', 'side', '_group'];
   eventDescription: string = `נשמח לראותכם בחתונה של שירלי צדוק ויועד וולפסטל, שתיערך ב"עדן גן האירועים" ב-29.6. אנא אשרו השתתפותכם בקישור הבא:`;
   shuttleDescription: string = `בנוסף, לחצו כאן כדי להירשם להסעה: https://forms.gle/XMMMfSxGyL65R6T36`;
   ifNoLinks: string = `טיפ: על מנת להפוך את הקישור ללחיץ, *שלחו הודעה חזרה* ונסו שוב בעוד דקה. אם בכל זאת לא הצלחתם, שילחו את מספר המגיעים כאן ואנו נעדכן את התשובה עבורכם.`;
@@ -30,6 +30,7 @@ export class AppComponent implements OnInit {
     "https://payboxapp.page.link/snan5v3sJWy2WEG97",
     "https://payboxapp.page.link/2DxG279uGV1ug7Jj7"
   ]
+  thanksDescription: string = 'משפחה וחברים יקרים! 😍\nהיה לנו כל כך כיף שבאתם, ורצינו להודות לכל אחת ואחד מכם! 👔👗\nתודה על שהייתם חלק מהערב המרגש בחיינו - שהרמתם, ריגשתם ושימחתם! 🎉\nאוהבים מאוד מאוד, שירלי צדוק ויועד וולפסטל 💖';
   attendingGuestsCount: number;
 
   constructor(private guestsService: GuestsService) {
@@ -116,11 +117,16 @@ export class AppComponent implements OnInit {
   }
 
   sendWeddingDayTexts(guest: guestEM, index: number) {
-    debugger;
     let personalised = `${guest.recipient} היקרים,`
     let payboxLink = this.payboxLinks[index % this.payboxLinks.length];
 
     let message = `${personalised}\n${this.weddingDayDescription}\n${this.navigationLink}\n${this.payboxDescription}\n${payboxLink}\n\n${this.greeting}`;
+    let number = this.normalizedPhoneNumber(guest.phoneNumber);
+    window.open(`https://web.whatsapp.com/send?phone=${number}&text=${encodeURI(message)}`, "_blank");
+  }
+
+  sendThankyouTexts(guest: guestEM) {    
+    let message = this.thanksDescription;
     let number = this.normalizedPhoneNumber(guest.phoneNumber);
     window.open(`https://web.whatsapp.com/send?phone=${number}&text=${encodeURI(message)}`, "_blank");
   }

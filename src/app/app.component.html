@@ -35,6 +35,16 @@
             </td>
         </ng-container>
 
+        <!-- button to only copy the message to the clipboard -->
+        <ng-container matColumnDef="copyCreator">
+            <th mat-header-cell *matHeaderCellDef>העתקה ידנית של ההזמנה</th>
+            <td mat-cell *matCellDef="let element">
+                <button mat-raised-button color="primary" (click)="copyToClipboard(element)">
+                    העתק
+                </button>
+            </td>
+        </ng-container>
+
         <!-- button to open whatsapp tab with recipient and message -->
         <ng-container matColumnDef="weddingDayCreator">
             <th mat-header-cell *matHeaderCellDef>שליחת קישור לפייבוקס בווצפ</th>
@@ -45,12 +55,12 @@
             </td>
         </ng-container>
 
-        <!-- button to only copy the message to the clipboard -->
-        <ng-container matColumnDef="copyCreator">
-            <th mat-header-cell *matHeaderCellDef>העתקה ידנית של ההזמנה</th>
+        <!-- button to open whatsapp tab with recipient and message -->
+        <ng-container matColumnDef="thanksCreator">
+            <th mat-header-cell *matHeaderCellDef>שליחת תודה בווצפ</th>
             <td mat-cell *matCellDef="let element">
-                <button mat-raised-button color="primary" (click)="copyToClipboard(element)">
-                    העתק
+                <button mat-raised-button color="primary" (click)="sendThankyouTexts(element)">
+                    שלח בווצפ
                 </button>
             </td>
         </ng-container>
